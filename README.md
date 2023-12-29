@@ -5,3 +5,4 @@
 - Better evaluation function
   - Let the bot know the concept of wins and losses instead of just using weights telling the bot where you generally want pieces
 - Changelog
+- Code documentation
