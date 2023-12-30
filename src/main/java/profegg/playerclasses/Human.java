@@ -2,14 +2,14 @@ package profegg.playerclasses;
 
 import java.util.Scanner;
 
-import profegg.GameBoard;
+import profegg.ConnectFourBoard;
 
 public class Human extends Player {
 
     Scanner input;
 
-    public Human(char chip, GameBoard board, boolean first) {
-        super(chip, board, first);
+    public Human(ConnectFourBoard board) {
+        super(board);
         input = new Scanner(System.in);
     }
 

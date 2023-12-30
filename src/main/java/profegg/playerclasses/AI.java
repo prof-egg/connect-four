@@ -1,9 +1,8 @@
 package profegg.playerclasses;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import profegg.GameBoard;
+import profegg.ConnectFourBoard;
 import profegg.Point;
 
 public class AI extends Player {
@@ -33,96 +32,18 @@ public class AI extends Player {
     // - Eval Function:
     // -- ??
 
-    private ArrayList<Point> myPieceLocations;
-    private ArrayList<Point> opponentPieceLocations;
-
-    /**@deprecated */
-    int[] lastKnownHeights;
-
-    public AI(char chip, GameBoard board, boolean first) {
-        super(chip, board, first);
-
-        myPieceLocations = new ArrayList<>();
-        opponentPieceLocations = new ArrayList<>();
-        
-        lastKnownHeights = board.copyHeights(); // DELETE
-
-        List<Point> moveHistory = board.copyMoveHistory();
-        if (moveHistory.size() == 0) return;
-
-        int evenOdd = 1;
-        if (first) evenOdd = 0;
-        for (int i = 0; i < moveHistory.size(); i++) {
-            if (i % 2 == evenOdd) 
-                myPieceLocations.add(moveHistory.get(i));
-            else
-                opponentPieceLocations.add(moveHistory.get(i));
-        }
+    public AI(ConnectFourBoard board) {
+        super(board);
     }
 
-    /**
-     * @deprecated
-     * @return
-     */
-    private List<Integer> getChangedHeightIndecies() {
-        ArrayList<Integer> list = new ArrayList<>();
-        int[] currentHeights = board.copyHeights();
-        for (int i = 0; i < board.columns; i++ ) 
-            if (lastKnownHeights[i] != currentHeights[i]) list.add(i);
-        return list;
-    }
 
     public int getMove() {
-        int move = negaMaxRoot(7);
-
-        // Keep track of opponent pieces
-        if (board.moveCount() > 0) 
-            opponentPieceLocations.add(board.copyMoveHistory().getLast());
-
-        // Keep track of my placements
-        int row = board.openSpacesAtColumn(move);
-        myPieceLocations.add(new Point(row, move));
-
-        lastKnownHeights = board.copyHeights(); // DELETE
-        
-        return move;
+        return negaMaxRoot(7);
     }
 
-    /**
-     * @deprecated Dont use this
-     * @return
-     */
-    private Point getLastOpponentMove() {
-        // keep track of oppenent placements
-        // to do so just keep a track of the heights
-        // of the columns since the last move we made
-        // Then check for changes in heights in the column
-        // Either there is 2 changes in heights, where the change in height
-        // that we didnt mess with was the opponents doing
-        // or only 1 height changes, where the opponent played in 
-        // the same column as our last move 
-        List<Integer> changedHeights = getChangedHeightIndecies();
-        if (changedHeights.size() == 1) {
-            int colThatChangedHeight = changedHeights.get(0) + 1;
-            int calcRow = board.openSpacesAtColumn(colThatChangedHeight) - 1;
-            return new Point(calcRow, colThatChangedHeight);
-        } else if (changedHeights.size() == 2) {
-            Point ourLastMove = myPieceLocations.getLast();
-            int index = changedHeights.indexOf(ourLastMove.col);
-            // This inverts the index we want, if 1 then 0, if 0 then 1
-            // We want the index of the point that ISNT our last move
-            int otherIndex = 1 - index; 
-            int colThatChangedHeight = changedHeights.get(otherIndex) + 1;
-            int calcRow = board.openSpacesAtColumn(colThatChangedHeight) - 1;
-            return new Point(calcRow, colThatChangedHeight);
-        } else 
-            throw new RuntimeException("Called when no opponent move has been made");
-    }
-
-    //////////////////////
-    // SEARCH (NEGAMAX) //
-    //////////////////////
-
+    /***************************************************************************
+    * SEARCH STUFF (NEGAMAX)
+    ***************************************************************************/
     private int negaMaxRoot(int depth) {
         if (depth == 0) return evaluate();
 
@@ -144,6 +65,9 @@ public class AI extends Player {
             if (eval > bestEval) {
                 bestEval = eval;
                 bestMove = column;
+            } else if (eval == bestEval) {
+                // IMPLEMENT THIS:
+                // pick a random move
             }
             board.unAddChip();
             // System.out.print("\nMOVE UNMADE: \n" + board + "\n\n");
@@ -177,31 +101,9 @@ public class AI extends Player {
         return bestEval;
     }
 
-    // private class SearchNode {
-    //     public final ArrayList<SearchNode> futurePositions = null;
-    //     public final GameBoard board;
-    //     public final int eval;
-    //     public final int depth;
-        
-    //     public SearchNode(GameBoard board, int depth) {
-    //         this.board = board;
-    //         this.eval = evaluate(this.board);
-    //         this.depth = depth;
-
-    //         if (depth == 0) return;
-
-    //         for (int column : board.getOpenColumns()) {
-    //             char chip = (board.playerOneToMove()) ? 'X' : 'O';
-    //             GameBoard newGameBoard = new GameBoard(board.moveOrder());
-    //             newGameBoard.addChip(column, chip);
-    //             futurePositions.add(new SearchNode(newGameBoard, depth - 1));
-    //         }
-    //     }
-    // }
-
-    //////////
-    // EVAL //
-    //////////
+    /***************************************************************************
+    * EVALAUTION STUFF
+    ***************************************************************************/
     private int evaluate() {
 
         var p1PLocations = board.copyP1MoveHistory();
@@ -236,6 +138,7 @@ public class AI extends Player {
 
         return totalWeight;
     }
+
 
     // private final int[][] horizontalWeights = {
     //     { 1, 2, 3, 4, 3, 2, 1 },
@@ -287,11 +190,11 @@ public class AI extends Player {
     };
 
 
-    ///////////
-    // OTHER //
-    ///////////
-    private int getRandomMove() {
-        List<Integer> openColumns = board.getOpenColumns();
-        return openColumns.get((int) (Math.random() * openColumns.size()));
-    }
+    /***************************************************************************
+    * OTHER
+    ***************************************************************************/
+    // private int getRandomMove() {
+    //     List<Integer> openColumns = board.getOpenColumns();
+    //     return openColumns.get((int) (Math.random() * openColumns.size()));
+    // }
 }

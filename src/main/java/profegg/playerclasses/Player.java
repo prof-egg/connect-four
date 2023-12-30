@@ -1,22 +1,14 @@
 package profegg.playerclasses;
 
-import profegg.GameBoard;
+import profegg.ConnectFourBoard;
 
 public abstract class Player {
 
-    char chip; // 'X' or 'O' preferably
-    GameBoard board;
-    boolean first;
+    ConnectFourBoard board;
 
-    Player(char chip, GameBoard board, boolean first) {
-        this.chip = chip;
+    Player(ConnectFourBoard board) {
         this.board = board;
-        this.first = first;
     }
 
     public abstract int getMove();
-
-    public char chip() {
-        return chip;
-    }
 }
