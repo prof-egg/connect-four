@@ -20,8 +20,8 @@ public class App {
 
         ConnectFourBoard board = new ConnectFourBoard();
         board.equals(board);
-        Player p1 = (p1Human) ? new Human('X', board, true) : new AI('X', board, true);
-        Player p2 = (p2Human) ? new Human('O', board, false) : new AI('O', board, false);
+        Player p1 = (p1Human) ? new Human(board) : new AI(board);
+        Player p2 = (p2Human) ? new Human(board) : new AI(board);
 
         refreshBoard(board);
 
