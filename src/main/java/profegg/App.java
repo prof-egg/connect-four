@@ -2,6 +2,8 @@ package profegg;
 
 import profegg.playerclasses.AI;
 import profegg.playerclasses.Human;
+import profegg.playerclasses.Player;
+
 import java.lang.Thread;
 
 /**
@@ -10,73 +12,51 @@ import java.lang.Thread;
  */
 public class App {
 
-    private static void AIVsAI(int sleepTime) {
-        GameBoard board = new GameBoard();
-        AI player = new AI('X', board, true);
-        AI ai = new AI('O', board, false);
-        refreshBoard(board);
-
-        while (true) {
-
-            board.addChip(player);
-            refreshBoard(board);
-            if (board.isWinner(player)) {
-                System.out.println("You won!");
-                break;
-            }
-
-            try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-            board.addChip(ai);
-            refreshBoard(board);
-            if (board.isWinner(ai)) {
-                System.out.println("You lost!");
-                break;
-            }
-
-            if (board.isFull())
-                System.out.println("It's a draw!");
-
-            try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        System.out.println(board.moveOrder());
+    public static void main(String[] args) {
+        PvP(true, false, 0);
     }
 
-    private static void HumanVsAI() {
-        GameBoard board = new GameBoard();
-        Human player = new Human('X', board, true);
-        AI ai = new AI('O', board, false);
+    private static void PvP(boolean p1Human, boolean p2Human, int sleepTime) {
+
+        ConnectFourBoard board = new ConnectFourBoard();
+        board.equals(board);
+        Player p1 = (p1Human) ? new Human('X', board, true) : new AI('X', board, true);
+        Player p2 = (p2Human) ? new Human('O', board, false) : new AI('O', board, false);
+
         refreshBoard(board);
 
         while (true) {
 
-            board.addChip(player);
+            board.addChip(p1);
             refreshBoard(board);
-            if (board.isWinner(player)) {
-                System.out.println("You won!");
+            if (board.isWinner(true)) {
+                System.out.println("Player 1 wins!");
                 break;
             }
 
-            board.addChip(ai);
+            try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            board.addChip(p2);
             refreshBoard(board);
-            if (board.isWinner(ai)) {
-                System.out.println("You lost!");
+            if (board.isWinner(false)) {
+                System.out.println("Player 2 wins!");
                 break;
             }
 
             if (board.isFull())
                 System.out.println("It's a draw!");
 
+            try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         System.out.println(board.moveOrder());
     }
@@ -86,13 +66,9 @@ public class App {
         System.out.flush();
     }
 
-    private static void refreshBoard(GameBoard board) {
+    private static void refreshBoard(ConnectFourBoard board) {
         clearConsole();
         System.out.print("\nBOARD: \n" + board + "\n\n");
     }
 
-    public static void main(String[] args) {
-
-        HumanVsAI();
-    }
 }
