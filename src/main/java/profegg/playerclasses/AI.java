@@ -47,14 +47,6 @@ public class AI extends Player {
     private int negaMaxRoot(int depth) {
         if (depth == 0) return evaluate();
 
-        // IMPLEMENT THIS:
-        // if (board.connectedFour()) 
-        //     return (int) Double.NEGATIVE_INFINITY;
-
-        if (board.isFull()) 
-            return 0; // Drawn game
-        
-
         int bestEval = (int) Double.NEGATIVE_INFINITY;
 
         List<Integer> openColumns = board.getOpenColumns();
@@ -78,14 +70,6 @@ public class AI extends Player {
         
         if (depth == 0) return evaluate();
 
-        // IMPLEMENT THIS:
-        // if (board.isWinner(false)) 
-        //     return (int) Double.NEGATIVE_INFINITY;
-
-        if (board.isFull()) 
-            return 0; // Drawn game
-        
-
         int bestEval = (int) Double.NEGATIVE_INFINITY;
         List<Integer> openColumns = board.getOpenColumns();
         for (int column : openColumns) {
@@ -103,6 +87,13 @@ public class AI extends Player {
     ***************************************************************************/
     private int evaluate() {
 
+        if (board.isWinner(board.playerOneToMove())) 
+            return (int) Double.POSITIVE_INFINITY; // Won game
+
+        if (board.isFull()) 
+            return 0; // Drawn game
+
+        // WEIGHT CHECKS
         var p1PLocations = board.copyP1MoveHistory();
         var p2PLocations = board.copyP2MoveHistory();
 
@@ -111,8 +102,9 @@ public class AI extends Player {
 
         int weightDifference = p1Weight - p2Weight;
 
+        // FINAL EVAL
         int perspective = (board.playerOneToMove()) ? 1 : -1;
-
+        
         int eval = weightDifference * perspective;
 
         return eval;
