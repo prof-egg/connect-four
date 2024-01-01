@@ -6,7 +6,7 @@
 
   <groupId>profegg</groupId>
   <artifactId>connect4</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <name>connect4</name>
   <!-- FIXME change it to the project's website -->
