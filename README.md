@@ -3,7 +3,6 @@ I want to make a connect four engine that can beat me in connect four. I happen 
 
 ## Current Project Wish List
 - Better read me
-- Up to date unit tests (may or may not happen im lazy)
 - Better evaluation function
   - Let the bot know the concept of wins and losses instead of just using weights telling the bot where you generally want pieces
 - Better search function (improved negamax search)
