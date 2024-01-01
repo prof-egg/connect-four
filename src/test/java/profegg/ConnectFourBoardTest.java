@@ -107,20 +107,4 @@ public class ConnectFourBoardTest {
         board.unAddChip();
         assertTrue(board.playerOneToMove());
     }
-
-    @Test
-    public void playerOneToMove4() {
-        ConnectFourBoard board = new ConnectFourBoard("4455");
-        board.unAddChip();
-        board.unAddChip();
-        assertTrue(board.playerOneToMove());
-    }
-
-    @Test
-    public void playerOneToMove5() {
-        ConnectFourBoard board = new ConnectFourBoard("4455");
-        board.unAddChip();
-        board.unAddChip();
-        assertTrue(board.playerOneToMove());
-    }
 }
