@@ -74,16 +74,19 @@ public class ConnectFourBoard {
 
         int row = openSpacesAtColumn(col);
 
-        board[getIndexAtPoint(row, col)] = getCurrentChip();
-        openColumnSpaces[col - 1]--;
-
-        moveOrder += col;
-        moveCount++;
-
         Point point = new Point(row, col);
         moveHistory.add(point);
         if (playerOneToMove()) playerOneMoveHistory.add(point);
         else playerTwoMoveHistory.add(point);
+
+        openColumnSpaces[col - 1]--;
+        board[getIndexAtPoint(row, col)] = getCurrentChip();
+
+        // This is last because other methods rely on 
+        // the move count variable, changing it half way
+        // through could mess things up
+        moveOrder += col;
+        moveCount++;
 
         return point;
     }
@@ -102,16 +105,19 @@ public class ConnectFourBoard {
 
         int row = openSpacesAtColumn(col);
 
-        board[getIndexAtPoint(row, col)] = getCurrentChip();
-        openColumnSpaces[col - 1]--;
-
-        moveOrder += col;
-        moveCount++;
-
         Point point = new Point(row, col);
         moveHistory.add(point);
         if (playerOneToMove()) playerOneMoveHistory.add(point);
         else playerTwoMoveHistory.add(point);
+
+        openColumnSpaces[col - 1]--;
+        board[getIndexAtPoint(row, col)] = getCurrentChip();
+
+        // This is last because other methods rely on 
+        // the move count variable, changing it half way
+        // through could mess things up
+        moveOrder += col;
+        moveCount++;
 
         return point;
     }
@@ -125,19 +131,15 @@ public class ConnectFourBoard {
 
         if (moveCount < 1) throw new NoSuchElementException("Attempted to unadd chip when board was empty");
 
-        // String playerMoveHistory = (playerOneToMove()) ? "playerTwoMoveHistory" : "playerOneMoveHistory";
-        // This doesnt make much sense, I feel like it should be the other way around like the comment above
-        // since if its player 1 to move, that means the last move to be made was by player two, but it onl works
-        // like this, this may be a bug or a i may be stupid
-        ArrayList<Point> playerMoveHistory = (playerOneToMove()) ? playerOneMoveHistory : playerTwoMoveHistory;        
+        ArrayList<Point> playerMoveHistory = (playerOneToMove()) ? playerTwoMoveHistory : playerOneMoveHistory;        
         playerMoveHistory.removeLast();
         Point point = moveHistory.removeLast();
-        
+
+        openColumnSpaces[point.col - 1]++;
+        board[getIndexAtPoint(point.row, point.col)] = ' ';
+
         moveOrder = moveOrder.substring(0, moveOrder.length() - 1);
         moveCount--;
-
-        board[getIndexAtPoint(point.row, point.col)] = ' ';
-        openColumnSpaces[point.col - 1]++;
 
         return point;
     }   
