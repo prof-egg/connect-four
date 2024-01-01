@@ -47,12 +47,13 @@ public class AI extends Player {
     private int negaMaxRoot(int depth) {
         if (depth == 0) return evaluate();
 
-        if (board.isFull()) {
-            // IMPLEMENT THIS:
-            // if (board.connectedFour()) 
-            //     return (int) Double.NEGATIVE_INFINITY;
-            return 0; // Drawm game
-        }
+        // IMPLEMENT THIS:
+        // if (board.connectedFour()) 
+        //     return (int) Double.NEGATIVE_INFINITY;
+
+        if (board.isFull()) 
+            return 0; // Drawn game
+        
 
         int bestEval = (int) Double.NEGATIVE_INFINITY;
 
@@ -60,7 +61,6 @@ public class AI extends Player {
         int bestMove = 0;
         for (int column : openColumns) {
             board.addChip(column);
-            // System.out.print("\nMOVE MADE: \n" + board + "\n\n");
             int eval = -negaMaxProper(depth - 1);
             if (eval > bestEval) {
                 bestEval = eval;
@@ -70,7 +70,6 @@ public class AI extends Player {
                 // pick a random move
             }
             board.unAddChip();
-            // System.out.print("\nMOVE UNMADE: \n" + board + "\n\n");
         }
         return bestMove;
     }
@@ -79,23 +78,21 @@ public class AI extends Player {
         
         if (depth == 0) return evaluate();
 
-        if (board.isFull()) {
-            // IMPLEMENT THIS:
-            // if (board.connectedFour()) 
-            //     return (int) Double.NEGATIVE_INFINITY;
-            return 0; // Drawm game
-        }
+        // IMPLEMENT THIS:
+        // if (board.isWinner(false)) 
+        //     return (int) Double.NEGATIVE_INFINITY;
+
+        if (board.isFull()) 
+            return 0; // Drawn game
+        
 
         int bestEval = (int) Double.NEGATIVE_INFINITY;
-
         List<Integer> openColumns = board.getOpenColumns();
         for (int column : openColumns) {
             board.addChip(column);
-            // System.out.print("\nMOVE MADE: \n" + board + "\n\n");
             int eval = -negaMaxProper(depth - 1);
             bestEval = Math.max(eval, bestEval);
             board.unAddChip();
-            // System.out.print("\nMOVE UNMADE: \n" + board + "\n\n");
         }
         
         return bestEval;
@@ -112,11 +109,13 @@ public class AI extends Player {
         int p1Weight = getTotalPieceWeight(p1PLocations);
         int p2Weight = getTotalPieceWeight(p2PLocations);
 
-        int eval = p1Weight - p2Weight;
+        int weightDifference = p1Weight - p2Weight;
 
-        int perspective = (board.playerOneToMove()) ? -1 : 1;
+        int perspective = (board.playerOneToMove()) ? 1 : -1;
 
-        return eval * perspective;
+        int eval = weightDifference * perspective;
+
+        return eval;
     }
 
     private int getTotalPieceWeight(List<Point> points) {
