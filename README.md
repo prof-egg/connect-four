@@ -1,10 +1,17 @@
+## Version 1.0.0
+Features:
+- Basic negamax search
+- Basic board evaluation
+  - Piece square table
+  - Draw and win detection
+
 ## About This Project
 I want to make a connect four engine that can beat me in connect four. I happen to be pretty good at connect four and don't know much about AI so it will be a hard challenge.
 
 ## Current Project Wish List
 - Better read me
 - Better evaluation function
-  - Let the bot know the concept of wins and losses instead of just using weights telling the bot where you generally want pieces
+  - Introduce the concept of "forced wins"
 - Better search function (improved negamax search)
   - move ordering
   - alpha beta pruning
@@ -12,3 +19,8 @@ I want to make a connect four engine that can beat me in connect four. I happen 
 - Changelog
 - A much more efficient win detection method in the ConnectFourBoard API
   - Might be able to use union find idk i dont really remember a lot about it
+
+## Learning Resources
+Although these are about chess, the content is still heavily applicable. The information on searching positions is really helpful, just not so much the info on evaluating them.
+- https://www.chessprogramming.org
+- https://www.youtube.com/watch?v=U4ogK0MIzqk
