@@ -5,8 +5,6 @@ import profegg.playerclasses.Human;
 import profegg.playerclasses.Player;
 
 import java.lang.Thread;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Hello world!
