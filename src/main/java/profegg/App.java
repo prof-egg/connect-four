@@ -5,6 +5,8 @@ import profegg.playerclasses.Human;
 import profegg.playerclasses.Player;
 
 import java.lang.Thread;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Hello world!
@@ -13,22 +15,22 @@ import java.lang.Thread;
 public class App {
 
     public static void main(String[] args) {
-        PvP(true, false, 0);
+        PvP(true, false, 0, true);
     }
 
-    private static void PvP(boolean p1Human, boolean p2Human, int sleepTime) {
+    private static void PvP(boolean p1Human, boolean p2Human, int sleepTime, boolean clearConsole) {
 
         ConnectFourBoard board = new ConnectFourBoard();
         board.equals(board);
         Player p1 = (p1Human) ? new Human(board) : new AI(board);
         Player p2 = (p2Human) ? new Human(board) : new AI(board);
 
-        refreshBoard(board);
+        refreshBoard(board, clearConsole);
 
         while (true) {
 
             board.addChip(p1);
-            refreshBoard(board);
+            refreshBoard(board, clearConsole);
             if (board.isWinner(true)) {
                 System.out.println("Player 1 wins!");
                 break;
@@ -42,7 +44,7 @@ public class App {
             }
 
             board.addChip(p2);
-            refreshBoard(board);
+            refreshBoard(board, clearConsole);
             if (board.isWinner(false)) {
                 System.out.println("Player 2 wins!");
                 break;
@@ -66,8 +68,8 @@ public class App {
         System.out.flush();
     }
 
-    private static void refreshBoard(ConnectFourBoard board) {
-        clearConsole();
+    private static void refreshBoard(ConnectFourBoard board, boolean clearConsole) {
+        if (clearConsole) clearConsole();
         System.out.print("\nBOARD: \n" + board + "\n\n");
     }
 
